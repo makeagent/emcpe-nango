@@ -1,0 +1,614 @@
+integrations:
+    google-mail:
+        actions:
+            compose-draft:
+              endpoint: POST /draft
+              description: Creates a new draft email in Gmail.
+              input: GmailDraftInput
+              output: GmailDraftOutput
+              scopes:
+                - https://www.googleapis.com/auth/gmail.modify
+            compose-draft-reply:
+                description: Creates a new draft email that is a reply to an existing email.
+                output: GmailReplyDraftOutput
+                endpoint: POST /draft-reply
+                scopes: https://www.googleapis.com/auth/gmail.modify
+                input: GmailReplyDraftInput
+            list-messages:
+                endpoint: GET /list-messages
+                description: Lists emails from Gmail inbox with optional filtering.
+                input: GmailListMessagesInput
+                output: GmailMessageList
+                scopes:
+                  - https://www.googleapis.com/auth/gmail.readonly
+            get-message:
+                endpoint: GET /get-message
+                description: Retrieves a specific email by ID.
+                input: GmailGetMessageInput
+                output: GmailMessage
+                scopes:
+                  - https://www.googleapis.com/auth/gmail.readonly
+            search-messages:
+                endpoint: GET /search-messages
+                description: Searches for emails in Gmail using a query string.
+                input: GmailSearchMessagesInput
+                output: GmailMessageList
+                scopes:
+                  - https://www.googleapis.com/auth/gmail.readonly
+            send-email:
+                endpoint: POST /send-email
+                description: Sends an email via Gmail.
+                input: GmailSendEmailInput
+                output: GmailSendEmailOutput
+                scopes:
+                  - https://www.googleapis.com/auth/gmail.send
+    google-calendar:
+        actions:
+            create-event:
+                endpoint: POST /create-event
+                description: Creates a new event in Google Calendar.
+                input: GoogleCalendarEventInput
+                output: GoogleCalendarEventOutput
+                scopes:
+                  - https://www.googleapis.com/auth/calendar
+                  - https://www.googleapis.com/auth/calendar.events
+            update-event:
+                endpoint: PUT /update-event
+                description: Updates an existing event in Google Calendar.
+                input: GoogleCalendarEventUpdateInput
+                output: GoogleCalendarEventOutput
+                scopes:
+                  - https://www.googleapis.com/auth/calendar
+                  - https://www.googleapis.com/auth/calendar.events
+            list-calendars:
+                endpoint: GET /list-calendars
+                description: Lists all calendars available to the authenticated user.
+                output: GoogleCalendarList
+                scopes:
+                  - https://www.googleapis.com/auth/calendar.readonly
+            list-events:
+                endpoint: GET /list-events
+                description: Lists events from a specified calendar with optional filtering.
+                input: GoogleCalendarEventsInput
+                output: GoogleCalendarEventList
+                scopes:
+                  - https://www.googleapis.com/auth/calendar.readonly
+    google-sheet:
+        actions:
+            create-sheet:
+                endpoint: POST /create-sheet
+                description: Creates a new Google Sheet with optional initial data.
+                input: GoogleSheetCreateInput
+                output: GoogleSheetCreateOutput
+                scopes:
+                  - https://www.googleapis.com/auth/spreadsheets
+                  - https://www.googleapis.com/auth/drive.file
+            update-sheet:
+                endpoint: POST /update-sheet
+                description: Updates an existing Google Sheet with new data.
+                input: GoogleSheetUpdateInput
+                output: GoogleSheetUpdateOutput
+                scopes:
+                  - https://www.googleapis.com/auth/spreadsheets
+                  - https://www.googleapis.com/auth/drive.file
+    google-drive:
+        actions:
+            list-documents:
+                endpoint: GET /list-documents
+                description: Lists documents in Google Drive with optional filtering by folder ID and document type.
+                input: ListDocumentsInput
+                output: GoogleDriveDocumentList
+                scopes:
+                  - https://www.googleapis.com/auth/drive.readonly
+            list-root-folders:
+                endpoint: GET /list-root-folders
+                description: Lists folders at the root level of Google Drive.
+                output: GoogleDriveFolderList
+                scopes:
+                  - https://www.googleapis.com/auth/drive.readonly
+    linkedin:
+        actions:
+            get-user-profile:
+                endpoint: GET /get-user-profile
+                description: Gets the authenticated user's profile information from LinkedIn.
+                output: LinkedInUserProfile
+                scopes:
+                  - r_liteprofile
+                  - r_emailaddress
+    twitter-v2:
+        actions:
+            send-post:
+                endpoint: POST /send-post
+                description: Sends a new post to Twitter/X.
+                input: TwitterPostInput
+                output: TwitterPostOutput
+                scopes:
+                  - tweet.read
+                  - tweet.write
+                  - users.read
+            get-user-profile:
+                endpoint: GET /get-user-profile
+                description: Gets the authenticated user's profile information from Twitter/X.
+                output: TwitterUserProfile
+                scopes:
+                  - users.read
+    github:
+        actions:
+            # Repository CRUD actions
+            list-repositories:
+                endpoint: GET /list-repositories
+                description: Lists repositories for the authenticated user.
+                output: GithubRepositoryList
+                scopes:
+                  - repo
+            get-repository:
+                endpoint: GET /get-repository
+                description: Gets a specific repository by owner and name.
+                input: GithubRepositoryInput
+                output: GithubRepository
+                scopes:
+                  - repo
+            create-repository:
+                endpoint: POST /create-repository
+                description: Creates a new repository for the authenticated user.
+                input: GithubCreateRepositoryInput
+                output: GithubRepository
+                scopes:
+                  - repo
+            update-repository:
+                endpoint: PATCH /update-repository
+                description: Updates an existing repository.
+                input: GithubUpdateRepositoryInput
+                output: GithubRepository
+                scopes:
+                  - repo
+            delete-repository:
+                endpoint: DELETE /delete-repository
+                description: Deletes a repository.
+                input: GithubRepositoryInput
+                output: GithubDeleteRepositoryOutput
+                scopes:
+                  - delete_repo
+            # Issue CRUD actions
+            list-issues:
+                endpoint: GET /list-issues
+                description: Lists issues for a repository.
+                input: GithubIssuesInput
+                output: GithubIssueList
+                scopes:
+                  - repo
+            get-issue:
+                endpoint: GET /get-issue
+                description: Gets a specific issue by number.
+                input: GithubIssueInput
+                output: GithubIssue
+                scopes:
+                  - repo
+            create-issue:
+                endpoint: POST /create-issue
+                description: Creates a new issue in a repository.
+                input: GithubCreateIssueInput
+                output: GithubIssue
+                scopes:
+                  - repo
+            update-issue:
+                endpoint: PATCH /update-issue
+                description: Updates an existing issue.
+                input: GithubUpdateIssueInput
+                output: GithubIssue
+                scopes:
+                  - repo
+
+models:
+    GithubRepositoryInput:
+        owner: string       # Repository owner (username or organization)
+        repo: string        # Repository name
+    
+    GithubRepository:
+        id: number          # Repository ID
+        name: string        # Repository name
+        full_name: string   # Full repository name (owner/repo)
+        private: boolean    # Whether the repository is private
+        html_url: string    # URL to the repository on GitHub
+        description: string # Repository description
+        fork: boolean       # Whether the repository is a fork
+        url: string         # API URL for the repository
+        created_at: string  # Creation date
+        updated_at: string  # Last update date
+        pushed_at: string   # Last push date
+        git_url: string     # Git URL
+        ssh_url: string     # SSH URL
+        clone_url: string   # HTTPS clone URL
+        language: string    # Primary language
+        default_branch: string # Default branch name
+        open_issues_count: number # Number of open issues
+        topics: string[]    # Repository topics
+        visibility: string  # Repository visibility (public, private, internal)
+    
+    GithubRepositoryList:
+        repositories: GithubRepository[] # List of repositories
+    
+    GithubCreateRepositoryInput:
+        name: string        # Repository name
+        description?: string # Repository description
+        private?: boolean   # Whether the repository is private
+        has_issues?: boolean # Whether to enable issues
+        has_projects?: boolean # Whether to enable projects
+        has_wiki?: boolean  # Whether to enable wiki
+        auto_init?: boolean # Whether to initialize with a README
+        gitignore_template?: string # Gitignore template to use
+        license_template?: string # License template to use
+    
+    GithubUpdateRepositoryInput:
+        owner: string       # Repository owner
+        repo: string        # Repository name
+        name?: string       # New repository name
+        description?: string # New description
+        private?: boolean   # New private status
+        has_issues?: boolean # New has_issues status
+        has_projects?: boolean # New has_projects status
+        has_wiki?: boolean  # New has_wiki status
+        default_branch?: string # New default branch
+    
+    GithubDeleteRepositoryOutput:
+        success: boolean    # Whether the deletion was successful
+        message: string     # Status message
+    
+    GithubIssuesInput:
+        owner: string       # Repository owner
+        repo: string        # Repository name
+        state?: string      # Issue state (open, closed, all)
+        sort?: string       # Sort field (created, updated, comments)
+        direction?: string  # Sort direction (asc, desc)
+        per_page?: number   # Results per page
+        page?: number       # Page number
+    
+    GithubIssueInput:
+        owner: string       # Repository owner
+        repo: string        # Repository name
+        issue_number: number # Issue number
+    
+    # Main issue model
+    GithubIssue:
+        id: number          # Issue ID
+        number: number      # Issue number
+        title: string       # Issue title
+        state: string       # Issue state (open, closed)
+        locked: boolean     # Whether the issue is locked
+        body: string        # Issue body
+        user: GithubIssueCreator # User who created the issue
+        labels: GithubIssueLabel[] # Issue labels
+        assignees: GithubIssueAssignee[] # Issue assignees
+        created_at: string  # Creation date
+        updated_at: string  # Last update date
+        closed_at: string   # Closing date
+        comments: number    # Number of comments
+        html_url: string    # URL to the issue on GitHub
+    
+    # User who created the issue
+    GithubIssueCreator:
+        id: number          # User ID
+        login: string       # Username
+        avatar_url: string  # Avatar URL
+        html_url: string    # URL to the user on GitHub
+    
+    # Issue label
+    GithubIssueLabel:
+        id: number          # Label ID
+        name: string        # Label name
+        color: string       # Label color
+        description: string # Label description
+    
+    # Issue assignee
+    GithubIssueAssignee:
+        id: number          # User ID
+        login: string       # Username
+        avatar_url: string  # Avatar URL
+        html_url: string    # URL to the user on GitHub
+    
+    GithubIssueList:
+        issues: GithubIssue[] # List of issues
+    
+    GithubCreateIssueInput:
+        owner: string       # Repository owner
+        repo: string        # Repository name
+        title: string       # Issue title
+        body?: string       # Issue body
+        assignees?: string[] # Usernames of assignees
+        labels?: string[]   # Label names
+    
+    GithubUpdateIssueInput:
+        owner: string       # Repository owner
+        repo: string        # Repository name
+        issue_number: number # Issue number
+        title?: string      # New issue title
+        body?: string       # New issue body
+        state?: string      # New issue state (open, closed)
+        assignees?: string[] # New assignees
+        labels?: string[]   # New labels
+    
+    GithubUser:
+        id: number          # User ID
+        login: string       # Username
+        avatar_url: string  # Avatar URL
+        html_url: string    # URL to the user on GitHub
+    
+    GithubLabel:
+        id: number          # Label ID
+        name: string        # Label name
+        color: string       # Label color
+        description: string # Label description
+    
+    Attachments:
+        filename: string
+        mimeType: string
+        size: number
+        attachmentId: string
+    GmailDraftInput:
+      recipient: string
+      subject: string
+      body?: string
+      headers?: object
+    GmailDraftOutput:
+      id: string
+      threadId: string | null
+    GmailReplyDraftInput:
+        sender: string          # From GmailEmail: sender (e.g., "bingo@patreon.com")
+        subject: string         # From GmailEmail: subject
+        body: string            # From GmailEmail: body
+        threadId: string        # From GmailEmail: threadId
+        messageId: string       # From GmailEmail: messageId for threading
+        inReplyTo: string       # From GmailEmail: inReplyTo (may be empty)
+        references: string      # From GmailEmail: references (may be empty)
+        date: string            # From GmailEmail: date
+        replyBody: string       # Your new reply text
+    GmailReplyDraftOutput:
+        id: string
+        threadId: string | null
+    GmailListMessagesInput:
+        maxResults?: number     # Maximum number of messages to return (default: 10)
+        labelIds?: string[]     # Only return messages with these labels
+        q?: string              # Optional search query
+        pageToken?: string      # Page token for pagination
+    GmailMessageList:
+        messages: GmailMessageMetadata[]
+        nextPageToken?: string  # Token for getting the next page of results
+    GmailMessageMetadata:
+        id: string              # Message ID
+        threadId: string        # Thread ID
+        labelIds?: string[]     # Labels applied to the message
+        snippet?: string        # Short snippet of the message content
+    GmailGetMessageInput:
+        id: string              # Message ID to retrieve
+        format?: string         # Format of the message (full, metadata, minimal, raw)
+    # Main message model with flat structure to avoid cyclic references
+    GmailMessage:
+        id: string              # Message ID
+        threadId: string        # Thread ID
+        labelIds?: string[]     # Labels applied to the message
+        snippet?: string        # Short snippet of the message content
+        payload: object         # Raw message payload
+        sizeEstimate: number    # Estimated size in bytes
+        historyId: string       # ID for tracking message changes
+        internalDate: string    # Internal date of the message
+        # Extracted data for convenience
+        headers?: GmailHeader[] # Extracted headers
+        body?: string          # Decoded body content
+        mimeType?: string      # MIME type of the message
+        filename?: string      # Filename (if attachment)
+        attachments?: GmailAttachmentInfo[] # Information about attachments
+    
+    # Header structure
+    GmailHeader:
+        name: string            # Header name
+        value: string           # Header value
+    
+    # Attachment information
+    GmailAttachmentInfo:
+        filename: string        # Attachment filename
+        mimeType: string        # Attachment MIME type
+        size: number            # Size in bytes
+        attachmentId?: string   # Attachment ID for retrieval
+    GmailSearchMessagesInput:
+        q: string               # Search query
+        maxResults?: number     # Maximum number of messages to return (default: 10)
+        labelIds?: string[]     # Only return messages with these labels
+        pageToken?: string      # Page token for pagination
+    GmailSendEmailInput:
+        to: string              # Recipient email address
+        subject: string         # Email subject
+        body: string            # Email body
+        from?: string           # Sender email (if different from authenticated user)
+        cc?: string             # CC recipients
+        bcc?: string            # BCC recipients
+        attachments?: GmailAttachment[] # Optional attachments
+    GmailAttachment:
+        filename: string        # Attachment filename
+        content: string         # Base64 encoded content
+        mimeType: string        # MIME type of the attachment
+    GmailSendEmailOutput:
+        id: string              # Message ID
+        threadId: string        # Thread ID
+        labelIds?: string[]     # Labels applied to the message
+    GoogleCalendarList:
+        calendars:
+            - id: string
+              summary: string
+              description?: string
+              location?: string
+              timeZone: string
+              accessRole: string
+              primary: boolean
+              backgroundColor?: string
+              foregroundColor?: string
+        nextPageToken?: string
+    GoogleCalendarEventsInput:
+        calendarId: string
+        timeMin?: string
+        timeMax?: string
+        maxResults?: number
+        pageToken?: string
+        orderBy?: string
+        q?: string
+        singleEvents?: boolean
+        timeZone?: string
+    GoogleCalendarEventList:
+        events:
+            - id: string
+              summary: string
+              description?: string
+              location?: string
+              start:
+                dateTime?: string
+                date?: string
+                timeZone?: string
+              end:
+                dateTime?: string
+                date?: string
+                timeZone?: string
+              status: string
+              creator:
+                id?: string
+                email: string
+                displayName?: string
+                self?: boolean
+              organizer:
+                id?: string
+                email: string
+                displayName?: string
+                self?: boolean
+              attendees?:
+                - id?: string
+                  email: string
+                  displayName?: string
+                  responseStatus: string
+                  optional?: boolean
+                  resource?: boolean
+                  comment?: string
+              htmlLink: string
+              created: string
+              updated: string
+              recurrence?: string[]
+        nextPageToken?: string
+        timeZone: string
+    GoogleCalendarEventInput:
+        summary: string         # Event title
+        description?: string    # Event description
+        location?: string       # Event location
+        start: string           # Start datetime in RFC3339 format or date-only
+        end: string             # End datetime in RFC3339 format or date-only
+        timeZone?: string       # Timezone for the event
+        attendees?: string[]    # List of attendee email addresses
+    GoogleCalendarEventUpdateInput:
+        eventId: string         # ID of the event to update
+        summary?: string        # Event title
+        description?: string    # Event description
+        location?: string       # Event location
+        start?: string          # Start datetime in RFC3339 format or date-only
+        end?: string            # End datetime in RFC3339 format or date-only
+        timeZone?: string       # Timezone for the event
+        attendees?: string[]    # List of attendee email addresses
+        sendUpdates?: string    # Whether to send notifications about the update (all, externalOnly, none)
+    GoogleCalendarEventOutput:
+        id: string              # Event ID
+        htmlLink: string        # Link to the event in Google Calendar
+        status: string          # Status of the event (confirmed, tentative, cancelled)
+        created: string         # Creation timestamp
+    GoogleSheetCreateInput:
+        title: string           # The title of the new spreadsheet
+        sheets?: GoogleSheetTab[] # Optional array of sheet tabs to create
+    GoogleSheetTab:
+        title: string           # The title of the sheet tab
+        data?: SheetData        # Optional data for the sheet
+    SheetData:
+        rows: SheetRow[]        # Array of rows
+    SheetRow:
+        cells: string[]         # Array of cell values as strings
+    GoogleSheetCreateOutput:
+        id: string              # The ID of the created spreadsheet
+        url: string             # The URL to access the spreadsheet
+        title: string           # The title of the spreadsheet
+    GoogleSheetUpdateInput:
+        spreadsheetId: string   # The ID of the spreadsheet to update
+        updates: SheetUpdate[]  # Array of updates to apply
+    SheetUpdate:
+        sheetId?: number        # Optional sheet ID (if not provided, will use index)
+        sheetName?: string      # Optional sheet name (if not provided, will use sheetId)
+        range?: string          # Optional A1 notation range (e.g., "A1:C10")
+        startRow?: number       # Optional zero-based row index to start update
+        startColumn?: number    # Optional zero-based column index to start update
+        data: SheetData         # Data to update in the sheet
+    GoogleSheetUpdateOutput:
+        spreadsheetId: string   # The ID of the updated spreadsheet
+        updatedRange: string    # The range that was updated
+        updatedRows: number     # Number of rows updated
+        updatedColumns: number  # Number of columns updated
+        updatedCells: number    # Total number of cells updated
+    TwitterPostInput:
+        text: string            # The text content of the post
+        reply_to?: string       # Optional ID of a post to reply to
+        quote?: string          # Optional ID of a post to quote
+    TwitterPostOutput:
+        id: string              # The ID of the created post
+        text: string            # The text of the post
+        created_at: string      # When the post was created
+    ReferencedTweet:
+        type: string            # Type of reference (replied_to, quoted, retweeted)
+        id: string              # ID of the referenced tweet
+    TweetMetrics:
+        retweet_count: number   # Number of retweets
+        reply_count: number     # Number of replies
+        like_count: number      # Number of likes
+        quote_count: number     # Number of quote tweets
+    TwitterUserProfile:
+        id: string              # User ID
+        name: string            # User name
+        username: string        # User username
+        profile_image_url: string  # URL of the user's profile image
+        description: string     # User description
+        location: string        # User location
+        url: string             # User URL
+        protected: boolean      # Whether the user's tweets are protected
+        verified: boolean       # Whether the user is verified
+        followers_count: number # Number of followers
+        following_count: number # Number of users being followed
+        tweet_count: number     # Number of tweets
+        listed_count: number    # Number of lists the user is a member of
+    LinkedInUserProfile:
+        sub: string              # User ID
+        email_verified: boolean  # Whether the email is verified
+        name: string             # Full name
+        locale: object           # Locale information
+        given_name: string       # First name
+        family_name: string      # Last name
+        email: string            # Email address
+        picture: string          # Profile picture URL
+    GoogleDriveDocument:
+        id: string
+        name: string
+        mimeType: string
+        webViewLink: string
+        modifiedTime: string
+        createdTime: string
+        parents: string[]
+        size: string
+    GoogleDriveFolder:
+        id: string
+        name: string
+        mimeType: string
+        webViewLink: string
+        modifiedTime: string
+        createdTime: string
+        parents: string[]
+    ListDocumentsInput:
+        folderId?: string
+        mimeType?: string
+        pageSize?: number
+        pageToken?: string
+        orderBy?: string
+    GoogleDriveDocumentList:
+        documents: GoogleDriveDocument[]
+        nextPageToken?: string
+    GoogleDriveFolderList:
+        folders: GoogleDriveFolder[]
+        nextPageToken?: string

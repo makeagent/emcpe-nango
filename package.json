@@ -1,0 +1,36 @@
+{
+  "name": "easymcpeasy-nango-integrations",
+  "version": "0.1.0",
+  "description": "Nango integrations powering the easymcpeasy service - One MCP server to connect numerous authenticated endpoints.",
+  "type": "module",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "lint": "eslint .",
+    "format": "prettier --write ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/makeagent/easymcpeasy.git"
+  },
+  "keywords": [
+    "nango",
+    "api",
+    "integrations",
+    "oauth",
+    "mcp",
+    "model-context-protocol",
+    "google",
+    "twitter",
+    "linkedin"
+  ],
+  "author": "MakeAgent",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/makeagent/easymcpeasy/issues"
+  },
+  "homepage": "https://github.com/makeagent/easymcpeasy#readme",
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "prettier": "^2.0.0"
+  }
+}
